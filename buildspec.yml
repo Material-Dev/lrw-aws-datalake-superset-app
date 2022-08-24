@@ -1,0 +1,29 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+        docker: 18
+  pre_build:
+    commands:
+      - $(aws ecr get-login --no-include-email --region $REGION)
+      - docker pull $CONTAINER_REPOSITORY_URL || true
+  build:
+    commands:
+      - $(aws ecr get-login --no-include-email --region $REGION)
+      - echo Building the Docker image...
+      - docker build --cache-from $CONTAINER_REPOSITORY_URL:$IMAGE_TAG
+        --build-arg superset_username=$SUPERSET_USERNAME
+        --build-arg superset_password=$SUPERSET_PASSWORD
+        --build-arg superset_email=$SUPERSET_EMAIL
+        --tag $CONTAINER_REPOSITORY_URL:$IMAGE_TAG .
+      - echo Pushing the Docker image...
+      - docker push $CONTAINER_REPOSITORY_URL:$IMAGE_TAG
+  post_build:
+    commands:
+      - printf '[{"name":"%s","imageUri":"%s"}]' $ENVIRONMENT-superset $CONTAINER_REPOSITORY_URL:$IMAGE_TAG > imagedefinitions.json
+artifacts:
+  type: zip
+  files:
+    - "*/*"
+    - imagedefinitions.json
