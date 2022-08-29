@@ -42,7 +42,7 @@ RUN cd /app \
     && pip install --no-cache -r requirements/local.txt
 
 RUN pip install "PyAthena>1.2.0"
-RUN pip install pybigquery
+RUN pip install sqlalchemy-bigquery
 RUN pip install redis
 
 ######################################################################
