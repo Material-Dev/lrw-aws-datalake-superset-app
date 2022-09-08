@@ -11,6 +11,11 @@ phases:
   build:
     commands:
       - $(aws ecr get-login --no-include-email --region $REGION)
+      - echo Setting OAuth config values...
+      - sed -i "s|OAUTH_CLIENT_ID|$OAUTH_CLIENT_ID|g" ./superset_config.py
+      - sed -i "s|OAUTH_CLIENT_SECRET|$OAUTH_CLIENT_SECRET|g" ./superset_config.py
+      - sed -i "s|OAUTH_BASE_URL|$OAUTH_BASE_URL|g" ./superset_config.py
+      - echo OAuth config values set in superset_config.py
       - echo Building the Docker image...
       - docker build --cache-from $CONTAINER_REPOSITORY_URL:$IMAGE_TAG
         --build-arg superset_username=$SUPERSET_USERNAME

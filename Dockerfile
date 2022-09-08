@@ -45,6 +45,9 @@ RUN pip install "PyAthena>1.2.0"
 RUN pip install sqlalchemy-bigquery
 RUN pip install redis
 
+# Install Authlib for Azure AD SSO
+RUN pip install Authlib
+
 ######################################################################
 # Node stage to deal with static asset construction
 ######################################################################
@@ -100,6 +103,9 @@ COPY --from=superset-py /usr/local/lib/python3.8/site-packages/ /usr/local/lib/p
 COPY --from=superset-py /usr/local/bin/gunicorn /usr/local/bin/celery /usr/local/bin/flask /usr/bin/
 COPY --from=superset-node /app/superset/static/assets /app/superset/static/assets
 COPY --from=superset-node /app/superset-frontend /app/superset-frontend
+
+COPY superset_config.py /app/pythonpath/superset_config.py
+COPY custom_sso_security_manager.py /app/pythonpath/custom_sso_security_manager.py
 
 ## Lastly, let's install superset itself
 COPY superset /app/superset
