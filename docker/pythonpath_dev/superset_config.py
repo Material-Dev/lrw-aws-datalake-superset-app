@@ -112,37 +112,3 @@ try:
     )
 except ImportError:
     logger.info("Using default Docker config...")
-
-from flask_appbuilder.security.manager import AUTH_OAUTH
-AUTH_TYPE = AUTH_OAUTH
-OAUTH_PROVIDERS = [
-    {   'name':'MaterialAzureSSO',
-        'token_key':'access_token', # Name of the token in the response of access_token_url
-        'remote_app': {
-            'client_id':'191abbd5-26e8-4b98-a2ac-1b73f424d0ca',  # Client Id (Identify Superset application)
-            'client_secret':'nr_8Q~VWZv.C5ZID~zWnjw-URrVS99IEiOC7Pdj3', # Secret for this Client Id (Identify Superset application)
-            'client_kwargs':{
-                'scope': 'https://graph.microsoft.com/.default'               # Scope for the Authorization
-            },
-            'access_token_method':'POST',    # HTTP Method to call access_token_url
-            'access_token_params':{        # Additional parameters for calls to access_token_url
-                'client_id':'191abbd5-26e8-4b98-a2ac-1b73f424d0ca'
-            },
-            'access_token_headers':{    # Additional headers for calls to access_token_url
-                'Authorization': 'Basic Base64EncodedClientIdAndSecret'
-            },
-            'base_url':'https://login.microsoftonline.com/98f2bd9e-cd04-40db-9cee-2f94e6e676c1/oauth2/v2.0',
-            'access_token_url':'https://login.microsoftonline.com/98f2bd9e-cd04-40db-9cee-2f94e6e676c1/oauth2/v2.0/token',
-            'authorize_url':'https://login.microsoftonline.com/98f2bd9e-cd04-40db-9cee-2f94e6e676c1/oauth2/v2.0/authorize'
-        }
-    }
-]
-
-# Will allow user self registration, allowing to create Flask users from Authorized User
-AUTH_USER_REGISTRATION = True
-
-# The default user self registration role
-AUTH_USER_REGISTRATION_ROLE = "Public"
-
-from custom_sso_security_manager import CustomSsoSecurityManager
-CUSTOM_SECURITY_MANAGER = CustomSsoSecurityManager

@@ -45,6 +45,9 @@ RUN pip install "PyAthena>1.2.0"
 RUN pip install pybigquery
 RUN pip install redis
 
+# Install Authlib for Azure AD SSO
+RUN pip install Authlib
+
 ######################################################################
 # Node stage to deal with static asset construction
 ######################################################################
@@ -101,6 +104,9 @@ COPY --from=superset-py /usr/local/bin/gunicorn /usr/local/bin/celery /usr/local
 COPY --from=superset-node /app/superset/static/assets /app/superset/static/assets
 COPY --from=superset-node /app/superset-frontend /app/superset-frontend
 
+COPY superset_config.py /app/pythonpath/superset_config.py
+COPY custom_sso_security_manager.py /app/pythonpath/custom_sso_security_manager.py
+
 ## Lastly, let's install superset itself
 COPY superset /app/superset
 COPY setup.py MANIFEST.in README.md /app/
@@ -152,11 +158,6 @@ RUN wget https://download-installer.cdn.mozilla.net/pub/firefox/releases/${FIREF
 RUN cd /app \
     && pip install --no-cache -r requirements/docker.txt \
     && pip install --no-cache -r requirements/requirements-local.txt || true
-
-# Install Authlib lib explicitly here. We don't update the requirements files to make it
-# cleaner to keep our fork updated.
-RUN pip install Authlib
-
 USER superset
 
 
