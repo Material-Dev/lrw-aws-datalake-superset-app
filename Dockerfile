@@ -152,6 +152,11 @@ RUN wget https://download-installer.cdn.mozilla.net/pub/firefox/releases/${FIREF
 RUN cd /app \
     && pip install --no-cache -r requirements/docker.txt \
     && pip install --no-cache -r requirements/requirements-local.txt || true
+
+# Install Authlib lib explicitly here. We don't update the requirements files to make it
+# cleaner to keep our fork updated.
+RUN pip install Authlib
+
 USER superset
 
 
