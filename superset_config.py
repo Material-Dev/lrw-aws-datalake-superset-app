@@ -1,6 +1,6 @@
 # https://github.com/apache/superset/blob/master/superset/config.py
 
-from datetime import date
+from datetime import date, timedelta
 import os
 
 # from custom_sso_security_manager import CustomSsoSecurityManager
@@ -18,6 +18,8 @@ CACHE_CONFIG = {
     'CACHE_KEY_PREFIX': 'superset_results',
     'CACHE_REDIS_URL': f'redis://{REDIS_ADDRESS}:6379/0',
 }
+
+SUPERSET_WEBSERVER_TIMEOUT = int(timedelta(minutes=2).total_seconds())
 
 # DATA_CACHE_CONFIG = {
 #     'CACHE_TYPE': 'redis',
