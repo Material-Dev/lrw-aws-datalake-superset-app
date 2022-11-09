@@ -28,6 +28,7 @@ SUPERSET_WEBSERVER_TIMEOUT = int(timedelta(minutes=2).total_seconds())
 #     'CACHE_REDIS_URL': f'redis://{REDIS_ADDRESS}:6379/0',
 # }
 
+FEATURE_FLAGS = { 'ENABLE_TEMPLATE_PROCESSING': True}
 
 CACHE_NO_NULL_WARNING = True
 
