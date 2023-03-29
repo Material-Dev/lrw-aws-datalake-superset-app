@@ -42,7 +42,9 @@ RUN cd /app \
     && pip install --no-cache -r requirements/local.txt
 
 RUN pip install "PyAthena>1.2.0"
+RUN pip install sqlalchemy-redshift
 RUN pip install sqlalchemy-bigquery
+RUN pip install redshift-connector
 RUN pip install redis
 
 # Install Authlib for Azure AD SSO
